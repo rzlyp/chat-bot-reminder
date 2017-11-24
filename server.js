@@ -30,10 +30,10 @@ app.get('/', (req,res)=>{
 
 app.use(middleware(config))
 app.post('/webhook', (req, res) => {
-  // Promise
-  //   .all(req.body.events.map(handleEvent))
-  //   .then((result) => res.json(result));
-   res.json(req.body.events) 
+  Promise
+    .all(req.body.events.map(handleEvent))
+    .then((result) => res.statusCode(200).json(result));
+   // res.json(req.body.events) 
 });
 
 const client = new line.Client(config);
