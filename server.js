@@ -23,15 +23,17 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(middleware(config))
 
 app.get('/', (req,res)=>{
 	res.send("Hello dude");
 })
+
+app.use(middleware(config))
 app.post('/webhook', (req, res) => {
-  Promise
-    .all(req.body.events.map(handleEvent))
-    .then((result) => res.json(result));
+  // Promise
+  //   .all(req.body.events.map(handleEvent))
+  //   .then((result) => res.json(result));
+   res.json(req.body.events) 
 });
 
 const client = new line.Client(config);
