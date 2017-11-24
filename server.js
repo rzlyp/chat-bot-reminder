@@ -6,6 +6,7 @@ https://www.googleapis.com/calendar/v3/calendars/jp62glh2t94ls18803r79846rs@grou
 
 const express = require('express');
 const line = require('@line/bot-sdk');
+const Promise = require("bluebird");
 
 const config = {
   channelAccessToken: 'aDbXoAkHoMIK71zwm1XBEx30x7awNodPpYfXrd/Rwiem9CWLfJz7d/HYylmj37G7JVhhjrtJOa1s448hGe2E2GisiRuuPrPCYWSvYGZSORMdhzdqGR7c8Xq6JVhZkvSyWjUI9+29R6ZsLqL/sXoOoAdB04t89/1O/w1cDnyilFU=',
