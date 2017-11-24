@@ -32,7 +32,7 @@ app.use(middleware(config))
 app.post('/webhook', (req, res) => {
   Promise
     .all(req.body.events.map(handleEvent))
-    .then((result) => res.statusCode(200).json(result));
+    .then((result) => res.status(200).json(result));
    // res.json(req.body.events) 
 });
 
