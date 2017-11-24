@@ -6,6 +6,10 @@ https://www.googleapis.com/calendar/v3/calendars/jp62glh2t94ls18803r79846rs@grou
 
 const express = require('express');
 const line = require('@line/bot-sdk');
+const middleware = require('@line/bot-sdk').middleware
+const JSONParseError = require('@line/bot-sdk').JSONParseError
+const SignatureValidationFailed = require('@line/bot-sdk').SignatureValidationFailed
+
 const Promise = require("bluebird");
 const bodyParser = require('body-parser');
 
@@ -19,8 +23,12 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(middleware(config))
 
-app.post('/webhook', line.middleware(config), (req, res) => {
+app.get('/', (req,res)=>{
+	res.send("Hello dude");
+})
+app.post('/webhook', (req, res) => {
   Promise
     .all(req.body.events.map(handleEvent))
     .then((result) => res.json(result));
@@ -37,5 +45,14 @@ function handleEvent(event) {
     text: event.message.text
   });
 }
-
+app.use((err, req, res, next) => {
+  if (err instanceof SignatureValidationFailed) {
+    res.status(401).send(err.signature)
+    return
+  } else if (err instanceof JSONParseError) {
+    res.status(400).send(err.raw)
+    return
+  }
+  next(err) // will throw default 500
+})
 app.listen(process.env.port || 3000);
